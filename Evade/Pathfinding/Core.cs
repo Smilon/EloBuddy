@@ -6,8 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using ClipperLib;
 using Evade.Pathfinding;
-using LeagueSharp;
-using LeagueSharp.Common;
+using EloBuddy;
+using EloBuddy.SDK;
 using SharpDX;
 using Color = System.Drawing.Color;
 
