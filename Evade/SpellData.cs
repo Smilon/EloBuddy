@@ -16,7 +16,7 @@
 
 #region
 
-using LeagueSharp;
+using EloBuddy;
 
 #endregion
 

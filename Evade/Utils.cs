@@ -18,8 +18,8 @@
 
 using System;
 using System.Collections.Generic;
-using LeagueSharp;
-using LeagueSharp.Common;
+using EloBuddy;
+using EloBuddy.SDK;
 using SharpDX;
 using Color = System.Drawing.Color;
 using Path = System.Collections.Generic.List<ClipperLib.IntPoint>;

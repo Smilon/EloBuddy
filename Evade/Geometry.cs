@@ -19,7 +19,7 @@
 using System;
 using System.Collections.Generic;
 using ClipperLib;
-using LeagueSharp.Common;
+using EloBuddy.SDK;
 using SharpDX;
 using Color = System.Drawing.Color;
 using Path = System.Collections.Generic.List<ClipperLib.IntPoint>;

@@ -18,8 +18,8 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using LeagueSharp;
-using LeagueSharp.Common;
+using EloBuddy;
+using EloBuddy.SDK;
 
 #endregion
 

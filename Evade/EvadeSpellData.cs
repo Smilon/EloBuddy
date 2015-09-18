@@ -16,8 +16,8 @@
 
 #region
 
-using LeagueSharp;
-using LeagueSharp.Common;
+using EloBuddy;
+using EloBuddy.SDK;
 
 #endregion
 

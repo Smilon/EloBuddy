@@ -19,8 +19,8 @@
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
-using LeagueSharp;
-using LeagueSharp.Common;
+using EloBuddy;
+using EloBuddy.SDK;
 using SharpDX;
 
 #endregion

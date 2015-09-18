@@ -19,8 +19,8 @@
 using System;
 using System.Drawing;
 using System.Linq;
-using LeagueSharp;
-using LeagueSharp.Common;
+using EloBuddy;
+using EloBuddy.SDK;
 
 #endregion
 
