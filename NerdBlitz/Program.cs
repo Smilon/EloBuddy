@@ -100,6 +100,8 @@ namespace NerdBlitz
 
             Game.OnTick += Game_OnTick;
             Interrupter.OnInterruptableSpell += StateHandler.Interrupter_OnInterruptableSpell;
+
+            EloBuddy.Chat.Print("Thanks for using my script! Enjoy the game!");
         }
 
         private static void Game_OnTick(EventArgs args)
