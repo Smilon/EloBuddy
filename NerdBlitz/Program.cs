@@ -34,6 +34,9 @@ namespace NerdBlitz
         private static Slider manaH;
         public static int MinNumberManaH { get { return manaH.CurrentValue; } }
 
+        private static Slider lowQ;
+        public static int MinHQNoQ { get { return lowQ.CurrentValue; } }
+
         public static Menu BlitzMenu, ComboMenu, HarassMenu, FleeMenu, MiscMenu;
 
         private static void Loading_OnLoadingComplete(EventArgs args)
@@ -72,6 +75,7 @@ namespace NerdBlitz
             HarassMenu.AddGroupLabel("Harass Settings");
             HarassMenu.AddSeparator();
             HarassMenu.Add("useEHarass", new CheckBox("Use E"));
+            HarassMenu.AddSeparator();
             manaH = HarassMenu.Add("manamanager", new Slider("Minimum mana to harass (%)", 20, 1, 100));
 
             FleeMenu = BlitzMenu.AddSubMenu("Flee", "Flee");
@@ -83,6 +87,8 @@ namespace NerdBlitz
             MiscMenu.AddGroupLabel("Misc. Settings");
             MiscMenu.AddSeparator();
             MiscMenu.Add("interrupt", new CheckBox("Use Spells to Interrupt"));
+            MiscMenu.AddSeparator();
+            lowQ = MiscMenu.Add("hpcheck", new Slider("Don't pull if below HP (%)", 30, 1, 100));
 
             Game.OnTick += Game_OnTick;
             Interrupter.OnInterruptableSpell += StateHandler.Interrupter_OnInterruptableSpell;

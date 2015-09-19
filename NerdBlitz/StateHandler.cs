@@ -30,7 +30,7 @@ namespace NerdBlitz
         public static void Interrupter_OnInterruptableSpell(Obj_AI_Base unit, InterruptableSpellEventArgs spell)
         {
             var target = TargetSelector2.GetTarget(GetDynamicRange() + 100, DamageType.Magical);
-            if (Program.MiscMenu["interrupt"].Cast<CheckBox>().CurrentValue && Program.Q.IsReady())
+            if (Program.MiscMenu["interrupt"].Cast<CheckBox>().CurrentValue && Program.Q.IsReady() && !hpPre)
             {
                 if (unit.Distance(_Player.ServerPosition, true) <= Program.Q.Range)
                 {
@@ -61,6 +61,8 @@ namespace NerdBlitz
             if (target == null) return;
 
             var manaPre = _Player.ManaPercent > Program.MinNumberManaC;
+            var hpPre = _Player.HealthPercent > Program.MinHQNoQ;
+
             if (!manaPre)
             {
                 return;
@@ -83,7 +85,7 @@ namespace NerdBlitz
             {
                 Program.W.Cast();
             }
-            if (Program.ComboMenu["useQCombo"].Cast<CheckBox>().CurrentValue && Program.Q.IsReady() && target.IsValidTarget(Program.Q.Range))
+            if (Program.ComboMenu["useQCombo"].Cast<CheckBox>().CurrentValue && Program.Q.IsReady() && target.IsValidTarget(Program.Q.Range) && !hpPre)
             {
                 Program.Q.Cast(target);
             }
