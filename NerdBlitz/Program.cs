@@ -19,12 +19,22 @@ namespace NerdBlitz
             Loading.OnLoadingComplete += Loading_OnLoadingComplete;
         }
 
+        public static AIHeroClient _Player { get { return ObjectManager.Player; } }
         public static Spell.Skillshot Q;
         public static Spell.Active W;
         public static Spell.Active E;
         public static Spell.Active R;
+
+        private static Slider _numR;
+        public static int MinNumberR { get { return _numR.CurrentValue; } }
+
+        private static Slider manaC;
+        public static int MinNumberManaC { get { return manaC.CurrentValue; } }
+
+        private static Slider manaH;
+        public static int MinNumberManaH { get { return manaH.CurrentValue; } }		
 		
-        public static Menu BlitzMenu, ComboMenu, HarassMenu, FarmMenu, FleeMenu;
+        public static Menu BlitzMenu, ComboMenu, HarassMenu, FleeMenu;
 
         private static void Loading_OnLoadingComplete(EventArgs args)
         {
@@ -43,10 +53,7 @@ namespace NerdBlitz
             BlitzMenu.AddLabel("Berb @ EloBuddy");
 			BlitzMenu.AddSeparator();
 			BlitzMenu.AddLabel("TO-DO ::");
-			BlitzMenu.AddLabel("- Minimum enemy to ult");
-			BlitzMenu.AddLabel("- E > AA Function");
-			BlitzMenu.AddLabel("- Mana Manager");
-			BlitzMenu.AddLabel("- Ignite-Support");
+			BlitzMenu.AddLabel("- Interrupt with Q/E/R");
 
             ComboMenu = BlitzMenu.AddSubMenu("Combo", "Combo");
             ComboMenu.AddGroupLabel("Combo Settings");
@@ -55,16 +62,17 @@ namespace NerdBlitz
 			ComboMenu.Add("useWCombo", new CheckBox("Use W"));
 			ComboMenu.Add("useECombo", new CheckBox("Use E"));
             ComboMenu.Add("useRCombo", new CheckBox("Use R"));
+            ComboMenu.Add("igniteKill", new CheckBox("Ignite if Killable"));
+            ComboMenu.AddSeparator();
+            _numR = ComboMenu.Add("useRinEnemy", new Slider("Use R if enemy in range", 2, 1, 5));
+            ComboMenu.AddSeparator();
+            manaC = ComboMenu.Add("manamanager", new Slider("Minimum mana to do combo (%)", 20, 1, 100));
 
             HarassMenu = BlitzMenu.AddSubMenu("Harass", "Harass");
             HarassMenu.AddGroupLabel("Harass Settings");
             HarassMenu.AddSeparator();
 			HarassMenu.Add("useEHarass", new CheckBox("Use E"));
-
-            FarmMenu = BlitzMenu.AddSubMenu("Farm", "Farm");
-            FarmMenu.AddGroupLabel("Farming Settings");
-            FarmMenu.AddSeparator();
-			FarmMenu.AddLabel("Possibly not coming because this script is meant for support.");
+            manaH = HarassMenu.Add("manamanager", new Slider("Minimum mana to harass (%)", 20, 1, 100));
 
             FleeMenu = BlitzMenu.AddSubMenu("Flee", "Flee");
             FleeMenu.AddGroupLabel("Flee Settings");
