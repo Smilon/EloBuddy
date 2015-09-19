@@ -17,12 +17,7 @@ namespace NerdGraves
     class StateHandler
     {
         public static AIHeroClient _Player { get { return ObjectManager.Player; } }
-        public static Spell.Targeted ignite;
-        public static Spell.Active flash;
-        public static Vector2 oWp;
         private static Vector3 mousePos { get { return Game.CursorPos; } }
-        public static Vector2 nWp;
-
         public static float GetDynamicRange()
         {
             if (Program.Q.IsReady())
@@ -41,7 +36,7 @@ namespace NerdGraves
 
             if (target == null) return;
 
-            if (Program.ComboMenu["useRCKill"].Cast<CheckBox>().CurrentValue && Program.R.IsReady() && target.IsValidTarget(Program.R.Range) && CalcDamage(target) >= target.Health - 5)
+            if (Program.ComboMenu["useRCKill"].Cast<CheckBox>().CurrentValue || Program.ComboMenu["useRKill"].Cast<CheckBox>().CurrentValue && Program.R.IsReady() && target.IsValidTarget(Program.R.Range) && CalcDamage(target) >= target.Health - 5 || getRDmg(target) >= target.Health - 5)
             {
                 if (rPred.HitChance >= HitChance.High) { Program.R.Cast(target); }
             }
@@ -56,10 +51,6 @@ namespace NerdGraves
             if (Program.ComboMenu["useWCombo"].Cast<CheckBox>().CurrentValue && Program.W.IsReady() && target.IsValidTarget(Program.W.Range))
             {
                 if (wPred.HitChance >= HitChance.Low) { Program.W.Cast(target); }
-            }
-            if (Program.ComboMenu["useRKill"].Cast<CheckBox>().CurrentValue && Program.R.IsReady() && target.IsValidTarget(Program.R.Range) && getRDmg(target) >= target.Health - 5)
-            {
-                if (rPred.HitChance >= HitChance.High) { Program.R.Cast(target); }
             }
         }
 

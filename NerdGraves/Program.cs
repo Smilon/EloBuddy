@@ -25,7 +25,7 @@ namespace NerdGraves
         public static Spell.Skillshot E;
         public static Spell.Skillshot R;
 
-        public static Menu GravesMenu, ComboMenu, HarassMenu, FleeMenu, MiscMenu;
+        public static Menu GravesMenu, ComboMenu, HarassMenu, FleeMenu;
 
         private static Slider manaH;
         public static int MinManaH { get { return manaH.CurrentValue; } }
