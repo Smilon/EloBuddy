@@ -136,23 +136,10 @@ namespace NerdBlitz
         private static void CheckCollisionAndCastQ(Obj_AI_Base tar, HitChance chance)
         {
             var qPred = Program.Q.GetPrediction(tar);
-            var grabPred = Program.Q.GetPrediction(tar);
 
-            if (qPred.HitChance == HitChance.Collision)
+            if (qPred.HitChance >= chance)
             {
-                var coll = qPred.CollisionObjects.OrderBy(unit => unit.Distance(ObjectManager.Player.ServerPosition)).FirstOrDefault();
-
-                if (coll.Distance(tar) < 120)
-                {
-                    return;
-                }
-                else
-                {
-                    if (grabPred.HitChance >= chance)
-                    {
-                        Program.Q.Cast(tar);
-                    }
-                }
+                Program.Q.Cast(tar);
             }
         }
 
