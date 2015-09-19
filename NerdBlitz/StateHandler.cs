@@ -29,6 +29,7 @@ namespace NerdBlitz
 
         public static void Interrupter_OnInterruptableSpell(Obj_AI_Base unit, InterruptableSpellEventArgs spell)
         {
+            var hpPre = _Player.HealthPercent > Program.MinHQNoQ;
             var target = TargetSelector2.GetTarget(GetDynamicRange() + 100, DamageType.Magical);
             if (Program.MiscMenu["interrupt"].Cast<CheckBox>().CurrentValue && Program.Q.IsReady() && !hpPre)
             {
@@ -58,10 +59,11 @@ namespace NerdBlitz
             var target = TargetSelector2.GetTarget(GetDynamicRange() + 100, DamageType.Magical);
             var t = TargetSelector2.GetTarget(Program.R.Range, DamageType.Magical);
             var summonerIgnite = Player.Spells.FirstOrDefault(o => o.SData.Name == "summonerdot"); // Thanks finn
+            var hpPre = _Player.HealthPercent > Program.MinHQNoQ;
+
             if (target == null) return;
 
             var manaPre = _Player.ManaPercent > Program.MinNumberManaC;
-            var hpPre = _Player.HealthPercent > Program.MinHQNoQ;
 
             if (!manaPre)
             {
