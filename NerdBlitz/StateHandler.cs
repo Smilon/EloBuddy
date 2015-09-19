@@ -35,7 +35,7 @@ namespace NerdBlitz
             {
                 if (unit.Distance(_Player.ServerPosition, true) <= Program.Q.Range)
                 {
-                    Program.Q.Cast(target);
+                    CheckCollisionAndCastQ(target, HitChance.High);
                 }
             }
             if (Program.MiscMenu["interrupt"].Cast<CheckBox>().CurrentValue && Program.E.IsReady())
@@ -88,7 +88,7 @@ namespace NerdBlitz
             }
             if (Program.ComboMenu["useQCombo"].Cast<CheckBox>().CurrentValue && Program.Q.IsReady() && target.IsValidTarget(Program.Q.Range) && hpPre && Program.MiscMenu["grab" + target.ChampionName].Cast<CheckBox>().CurrentValue)
             {
-                Program.Q.Cast(target);
+                CheckCollisionAndCastQ(target, HitChance.High);
             }
             if (Program.ComboMenu["useECombo"].Cast<CheckBox>().CurrentValue && Program.E.IsReady() && target.IsValidTarget(Program.E.Range))
             {
@@ -110,7 +110,10 @@ namespace NerdBlitz
 
             var target = TargetSelector2.GetTarget(GetDynamicRange() + 100, DamageType.Magical);
             if (target == null) return;
-
+            if (Program.HarassMenu["useQHarass"].Cast<CheckBox>().CurrentValue && Program.E.IsReady() && target.IsValidTarget(Program.E.Range))
+            {
+                CheckCollisionAndCastQ(target, HitChance.Medium);
+            }
             if (Program.HarassMenu["useEHarass"].Cast<CheckBox>().CurrentValue && Program.E.IsReady() && target.IsValidTarget(Program.E.Range))
             {
                 Program.E.Cast();
@@ -129,5 +132,29 @@ namespace NerdBlitz
         {
             return 50 + 20 * _Player.Level;
         }
+
+        private static void CheckCollisionAndCastQ(Obj_AI_Base tar, HitChance chance)
+        {
+            var qPred = Program.Q.GetPrediction(tar);
+            var grabPred = Program.Q.GetPrediction(tar);
+
+            if (qPred.HitChance == HitChance.Collision)
+            {
+                var coll = qPred.CollisionObjects.OrderBy(unit => unit.Distance(ObjectManager.Player.ServerPosition)).FirstOrDefault();
+
+                if (coll.Distance(tar) < 120)
+                {
+                    return;
+                }
+                else
+                {
+                    if (grabPred.HitChance >= chance)
+                    {
+                        Program.Q.Cast(tar);
+                    }
+                }
+            }
+        }
+
     }
 }

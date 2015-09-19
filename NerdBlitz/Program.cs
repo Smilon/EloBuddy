@@ -77,6 +77,7 @@ namespace NerdBlitz
             HarassMenu = BlitzMenu.AddSubMenu("Harass", "Harass");
             HarassMenu.AddGroupLabel("Harass Settings");
             HarassMenu.AddSeparator();
+            HarassMenu.Add("useQHarass", new CheckBox("Use Q"));
             HarassMenu.Add("useEHarass", new CheckBox("Use E"));
             HarassMenu.AddSeparator();
             manaH = HarassMenu.Add("manamanager", new Slider("Minimum mana to harass (%)", 20, 1, 100));
