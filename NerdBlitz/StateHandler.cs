@@ -136,10 +136,11 @@ namespace NerdBlitz
         private static void CheckCollisionAndCastQ(Obj_AI_Base tar, HitChance chance)
         {
             var qPred = Program.Q.GetPrediction(tar);
+            var closestMinion = qPred.CollisionObjects.Count(h => h.IsEnemy && !h.IsDead && h is Obj_AI_Minion) < 1;
 
             if (qPred.HitChance != HitChance.Collision)
             {
-                if (qPred.HitChance >= chance)
+                if (qPred.HitChance >= chance && closestMinion)
                 {
                     Program.Q.Cast(tar);
                 }
