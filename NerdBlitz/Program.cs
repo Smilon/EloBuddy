@@ -81,13 +81,11 @@ namespace NerdBlitz
 
             MiscMenu = BlitzMenu.AddSubMenu("Misc", "Misc");
             MiscMenu.AddGroupLabel("Misc. Settings");
-            BlitzMenu.AddLabel("Not working (yet)");
             MiscMenu.AddSeparator();
-            MiscMenu.Add("qdashing", new CheckBox("Use Q on Dashing Enemies"));
-            MiscMenu.Add("qimmobil", new CheckBox("Use Q on Immobile Enemies"));
-            MiscMenu.Add("interruptq", new CheckBox("Use Spells to Interrupt"));
+            MiscMenu.Add("interrupt", new CheckBox("Use Spells to Interrupt"));
 
             Game.OnTick += Game_OnTick;
+            Interrupter.OnInterruptableSpell += StateHandler.Interrupter_OnInterruptableSpell;
         }
 
         private static void Game_OnTick(EventArgs args)

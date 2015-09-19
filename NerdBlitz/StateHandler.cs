@@ -27,6 +27,32 @@ namespace NerdBlitz
             return _Player.GetAutoAttackRange();
         }
 
+        public static void Interrupter_OnInterruptableSpell(Obj_AI_Base unit, InterruptableSpellEventArgs spell)
+        {
+            var target = TargetSelector2.GetTarget(GetDynamicRange() + 100, DamageType.Magical);
+            if (Program.MiscMenu["interrupt"].Cast<CheckBox>().CurrentValue && Program.Q.IsReady())
+            {
+                if (unit.Distance(_Player.ServerPosition, true) <= Program.Q.Range)
+                {
+                    Program.Q.Cast(target);
+                }
+            }
+            if (Program.MiscMenu["interrupt"].Cast<CheckBox>().CurrentValue && Program.E.IsReady())
+            {
+                if (unit.Distance(_Player.ServerPosition, true) <= Program.E.Range)
+                {
+                    Program.E.Cast();
+                }
+            }
+            if (Program.MiscMenu["interrupt"].Cast<CheckBox>().CurrentValue && Program.R.IsReady())
+            {
+                if (unit.Distance(_Player.ServerPosition, true) <= Program.R.Range)
+                {
+                    Program.R.Cast();
+                }
+            }
+        }
+
         public static void Combo()
         {
             var target = TargetSelector2.GetTarget(GetDynamicRange() + 100, DamageType.Magical);
