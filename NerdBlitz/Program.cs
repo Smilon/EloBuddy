@@ -34,7 +34,7 @@ namespace NerdBlitz
         private static Slider manaH;
         public static int MinNumberManaH { get { return manaH.CurrentValue; } }
 
-        public static Menu BlitzMenu, ComboMenu, HarassMenu, FleeMenu;
+        public static Menu BlitzMenu, ComboMenu, HarassMenu, FleeMenu, MiscMenu;
 
         private static void Loading_OnLoadingComplete(EventArgs args)
         {
@@ -78,6 +78,14 @@ namespace NerdBlitz
             FleeMenu.AddGroupLabel("Flee Settings");
             FleeMenu.AddSeparator();
             FleeMenu.Add("useWFlee", new CheckBox("Use W"));
+
+            MiscMenu = BlitzMenu.AddSubMenu("Misc", "Misc");
+            MiscMenu.AddGroupLabel("Misc. Settings");
+            BlitzMenu.AddLabel("Not working (yet)");
+            MiscMenu.AddSeparator();
+            MiscMenu.Add("qdashing", new CheckBox("Use Q on Dashing Enemies"));
+            MiscMenu.Add("qimmobil", new CheckBox("Use Q on Immobile Enemies"));
+            MiscMenu.Add("interruptq", new CheckBox("Use Spells to Interrupt"));
 
             Game.OnTick += Game_OnTick;
         }

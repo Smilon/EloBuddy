@@ -9,7 +9,6 @@ using EloBuddy.SDK.Enumerations;
 using EloBuddy.SDK.Events;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
-using eb = EloBuddy.Player;
 using extent = EloBuddy.SDK.Extensions;
 
 namespace NerdBlitz
@@ -30,23 +29,17 @@ namespace NerdBlitz
 
         public static void Combo()
         {
+            var target = TargetSelector2.GetTarget(GetDynamicRange() + 100, DamageType.Magical);
+            var t = TargetSelector2.GetTarget(Program.R.Range, DamageType.Magical);
+            var summonerIgnite = Player.Spells.FirstOrDefault(o => o.SData.Name == "summonerdot"); // Thanks finn
+            if (target == null) return;
+
             var manaPre = _Player.ManaPercent > Program.MinNumberManaC;
             if (!manaPre)
             {
                 return;
             }
 
-            var t = TargetSelector2.GetTarget(Program.R.Range, DamageType.Magical);
-
-            if (Program.ComboMenu["useRCombo"].Cast<CheckBox>().CurrentValue && Program.R.IsReady() && t.CountEnemiesInRange(Program.R.Range) >= Program.MinNumberR)
-            {
-                Program.R.Cast();
-            }
-
-            var target = TargetSelector2.GetTarget(GetDynamicRange() + 100, DamageType.Magical);
-            if (target == null) return;
-
-            var summonerIgnite = Player.Spells.FirstOrDefault(o => o.SData.Name == "summonerdot"); // Thanks finn
             if (summonerIgnite != null)
             {
                 SpellSlot igSlot = extent.GetSpellSlotFromName(_Player, "summonerdot");
@@ -64,13 +57,17 @@ namespace NerdBlitz
             {
                 Program.W.Cast();
             }
-            else if (Program.ComboMenu["useQCombo"].Cast<CheckBox>().CurrentValue && Program.Q.IsReady() && target.IsValidTarget(Program.Q.Range))
+            if (Program.ComboMenu["useQCombo"].Cast<CheckBox>().CurrentValue && Program.Q.IsReady() && target.IsValidTarget(Program.Q.Range))
             {
                 Program.Q.Cast(target);
             }
-            else if (Program.ComboMenu["useECombo"].Cast<CheckBox>().CurrentValue && Program.E.IsReady() && target.IsValidTarget(Program.E.Range))
+            if (Program.ComboMenu["useECombo"].Cast<CheckBox>().CurrentValue && Program.E.IsReady() && target.IsValidTarget(Program.E.Range))
             {
                 Program.E.Cast();
+            }
+            if (Program.ComboMenu["useRCombo"].Cast<CheckBox>().CurrentValue && Program.R.IsReady() && t.CountEnemiesInRange(Program.R.Range) >= Program.MinNumberR)
+            {
+                Program.R.Cast();
             }
         }
 
