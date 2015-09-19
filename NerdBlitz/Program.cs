@@ -53,7 +53,7 @@ namespace NerdBlitz
             BlitzMenu.AddLabel("Berb @ EloBuddy");
             BlitzMenu.AddSeparator();
             BlitzMenu.AddLabel("TO-DO ::");
-            BlitzMenu.AddLabel("- Interrupt with Q/E/R");
+            BlitzMenu.AddLabel("- Blacklist for no Q");
 
             ComboMenu = BlitzMenu.AddSubMenu("Combo", "Combo");
             ComboMenu.AddGroupLabel("Combo Settings");
