@@ -68,6 +68,7 @@ namespace NerdBlitz
             ComboMenu.Add("useWCombo", new CheckBox("Use W"));
             ComboMenu.Add("useECombo", new CheckBox("Use E"));
             ComboMenu.Add("useRCombo", new CheckBox("Use R"));
+            ComboMenu.Add("igniteAlways", new CheckBox("Always use ignite"));
             ComboMenu.Add("igniteKill", new CheckBox("Ignite if Killable"));
             ComboMenu.AddSeparator();
             _numR = ComboMenu.Add("useRinEnemy", new Slider("Use R if enemy in range", 2, 1, 5));
@@ -98,6 +99,8 @@ namespace NerdBlitz
             {
                 MiscMenu.Add("grab" + enemy.ChampionName, new CheckBox("Grab : " + enemy.ChampionName + "?"));
             }
+            MiscMenu.AddSeparator();
+            MiscMenu.Add("doFlashQ", new KeyBind("Do Flash Q (Not working)", false, KeyBind.BindTypes.HoldActive, 't'));
 
             Game.OnTick += Game_OnTick;
             Interrupter.OnInterruptableSpell += StateHandler.Interrupter_OnInterruptableSpell;
@@ -118,6 +121,11 @@ namespace NerdBlitz
             else if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Flee))
             {
                 StateHandler.Flee();
+            }
+            if (Program.ComboMenu["doFlashQ"].Cast<KeyBind>().CurrentValue)
+            {
+                StateHandler.FlashQCombo();
+                Orbwalker.MoveTo(Game.CursorPos);
             }
         }
     }

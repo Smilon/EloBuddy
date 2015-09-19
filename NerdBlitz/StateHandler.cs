@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EloBuddy;
+using SharpDX;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Enumerations;
 using EloBuddy.SDK.Events;
@@ -17,6 +18,9 @@ namespace NerdBlitz
     {
         public static AIHeroClient _Player { get { return ObjectManager.Player; } }
         public static Spell.Targeted ignite;
+        public static Spell.Active flash;
+        public static Vector2 oWp;
+        public static Vector2 nWp;
 
         public static float GetDynamicRange()
         {
@@ -76,10 +80,17 @@ namespace NerdBlitz
                 ignite = new Spell.Targeted(igSlot, 600);
                 if (Program.ComboMenu["igniteKill"].Cast<CheckBox>().CurrentValue && ignite.IsReady())
                 {
-                    if (getIgniteDamage() > target.Health - 10) //-10 on enemy health for safecheck
+                    if (getIgniteDamage() >= target.Health - 5) //-5 on enemy health for safecheck
                     {
                         ignite.Cast(target);
                     }
+                }
+            }
+            if (Program.ComboMenu["igniteAlways"].Cast<CheckBox>().CurrentValue && ignite.IsReady())
+            {
+                if (summonerIgnite != null)
+                {
+                    ignite.Cast(target);
                 }
             }
             if (Program.ComboMenu["useWCombo"].Cast<CheckBox>().CurrentValue && Program.W.IsReady())
@@ -146,6 +157,36 @@ namespace NerdBlitz
                 }
 
             }
+        }
+
+        public static void FlashQCombo() // ported from L# - Danz
+        {
+            /*
+            var target = TargetSelector2.GetTarget(GetDynamicRange() + 100, DamageType.Magical);
+
+            var FlashSlot = Player.Spells.FirstOrDefault(o => o.SData.Name == "summonerflash"); // Thanks finn
+
+            SpellSlot flSlot = extent.GetSpellSlotFromName(_Player, "summonerflash");
+            flash = new Spell.Active(flSlot, 425);
+
+            if (EloBuddy.SDK.Extensions.Distance(_Player, target) > Program.Q.Range && Program.ComboMenu["doFlashQ"].Cast<KeyBind>().CurrentValue)
+            {
+                if (FlashSlot != null && flash.IsReady() && Program.Q.IsReady())
+                {
+                    EloBuddy.Player.UpdateChargeableSpell(Program.Q.Slot, V2E(ObjectManager.Player.Position, target.Position, 425f).To3D(), true);
+                    var predPos = Program.Q.GetPrediction(target);
+                    if (!predPos.HitChance.Equals(HitChance.High))
+                        return;
+                    _Player.Spellbook.CastSpell(flSlot, target.Position);
+                    Program.Q.Cast(target);
+                }
+            }
+             */
+        }
+
+        static Vector2 V2E(Vector3 from, Vector3 direction, float distance)
+        {
+            return from.To2D() + distance * Vector3.Normalize(direction - from).To2D();
         }
 
     }
