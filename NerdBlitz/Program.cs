@@ -89,6 +89,11 @@ namespace NerdBlitz
             MiscMenu.Add("interrupt", new CheckBox("Use Spells to Interrupt"));
             MiscMenu.AddSeparator();
             lowQ = MiscMenu.Add("hpcheck", new Slider("Don't pull if below HP (%)", 30, 1, 100));
+            MiscMenu.AddSeparator();
+            foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.Team != _Player.Team))
+            {
+                MiscMenu.Add("grab" + enemy.ChampionName, new CheckBox("Grab : " + enemy.ChampionName + "?"));
+            }
 
             Game.OnTick += Game_OnTick;
             Interrupter.OnInterruptableSpell += StateHandler.Interrupter_OnInterruptableSpell;
