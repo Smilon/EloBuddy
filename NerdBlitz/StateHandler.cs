@@ -137,9 +137,13 @@ namespace NerdBlitz
         {
             var qPred = Program.Q.GetPrediction(tar);
 
-            if (qPred.HitChance >= chance)
+            if (qPred.HitChance != HitChance.Collision)
             {
-                Program.Q.Cast(tar);
+                if (qPred.HitChance >= chance)
+                {
+                    Program.Q.Cast(tar);
+                }
+
             }
         }
 
