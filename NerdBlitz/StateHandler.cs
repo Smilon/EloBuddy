@@ -31,7 +31,7 @@ namespace NerdBlitz
         {
             var hpPre = _Player.HealthPercent > Program.MinHQNoQ;
             var target = TargetSelector2.GetTarget(GetDynamicRange() + 100, DamageType.Magical);
-            if (Program.MiscMenu["interrupt"].Cast<CheckBox>().CurrentValue && Program.Q.IsReady() && !hpPre)
+            if (Program.MiscMenu["interrupt"].Cast<CheckBox>().CurrentValue && Program.Q.IsReady() && hpPre)
             {
                 if (unit.Distance(_Player.ServerPosition, true) <= Program.Q.Range)
                 {
@@ -87,7 +87,7 @@ namespace NerdBlitz
             {
                 Program.W.Cast();
             }
-            if (Program.ComboMenu["useQCombo"].Cast<CheckBox>().CurrentValue && Program.Q.IsReady() && target.IsValidTarget(Program.Q.Range) && !hpPre)
+            if (Program.ComboMenu["useQCombo"].Cast<CheckBox>().CurrentValue && Program.Q.IsReady() && target.IsValidTarget(Program.Q.Range) && hpPre)
             {
                 Program.Q.Cast(target);
             }
