@@ -27,7 +27,7 @@ namespace NerdBlitz
             }
             return _Player.GetAutoAttackRange();
         }
-		
+
         public static void Combo()
         {
             var manaPre = _Player.ManaPercent > Program.MinNumberManaC;
@@ -59,11 +59,11 @@ namespace NerdBlitz
                     }
                 }
             }
-			
-			if (Program.ComboMenu["useWCombo"].Cast<CheckBox>().CurrentValue && Program.W.IsReady()) 
-			{
-				Program.W.Cast();
-			}
+
+            if (Program.ComboMenu["useWCombo"].Cast<CheckBox>().CurrentValue && Program.W.IsReady())
+            {
+                Program.W.Cast();
+            }
             else if (Program.ComboMenu["useQCombo"].Cast<CheckBox>().CurrentValue && Program.Q.IsReady() && target.IsValidTarget(Program.Q.Range))
             {
                 Program.Q.Cast(target);
@@ -99,7 +99,8 @@ namespace NerdBlitz
             }
         }
 
-        public static int getIgniteDamage() {
+        public static int getIgniteDamage()
+        {
             return 50 + 20 * _Player.Level;
         }
     }
