@@ -56,7 +56,10 @@ namespace NerdBlitz
             BlitzMenu.AddLabel("Berb @ EloBuddy");
             BlitzMenu.AddSeparator();
             BlitzMenu.AddLabel("TO-DO ::");
-            BlitzMenu.AddLabel("- Blacklist for no Q");
+            BlitzMenu.AddLabel("- Flash > Q into Combo");
+            BlitzMenu.AddLabel("- Lane Clear");
+            BlitzMenu.AddLabel("- Jungle Troll (smite support)");
+            BlitzMenu.AddLabel("- [Give me suggestions!]");
 
             ComboMenu = BlitzMenu.AddSubMenu("Combo", "Combo");
             ComboMenu.AddGroupLabel("Combo Settings");
