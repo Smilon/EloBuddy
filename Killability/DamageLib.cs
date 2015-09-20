@@ -85,6 +85,13 @@ namespace Killability
                 if (checkCDtoCalc) { if (Program.W.IsReady()) { wdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Physical, (float)(new[] { 20, 35, 50, 65, 80 }[Program.W.Level] + 1.0 * _Player.TotalAttackDamage)); } } else { wdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Physical, (float)(new[] { 20, 35, 50, 65, 80 }[Program.W.Level] + 1.0 * _Player.TotalAttackDamage)); }
                 if (checkCDtoCalc) { if (Program.R.IsReady()) { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 250, 425, 600 }[Program.R.Level] + 1.0 * _Player.TotalMagicalDamage)); } } else { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 250, 425, 600 }[Program.R.Level] + 1.0 * _Player.TotalMagicalDamage)); }
             }
+            else if (_Player.ChampionName == "Azir")
+            {
+                if (checkCDtoCalc) { if (Program.Q.IsReady()) { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 65, 85, 105, 125, 145 }[Program.Q.Level] + 0.5 * _Player.TotalMagicalDamage)); } } else { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 65, 85, 105, 125, 145 }[Program.Q.Level] + 0.5 * _Player.TotalMagicalDamage)); }
+                if (checkCDtoCalc) { if (Program.W.IsReady()) { wdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(0.6 * _Player.TotalMagicalDamage)); } } else { wdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(0.6 * _Player.TotalMagicalDamage)); } // fucking horrible formula, not sure if even working
+                if (checkCDtoCalc) { if (Program.E.IsReady()) { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 60, 90, 120, 150, 180 }[Program.E.Level] + 0.4 * _Player.TotalMagicalDamage)); } } else { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 60, 90, 120, 150, 180 }[Program.E.Level] + 0.4 * _Player.TotalMagicalDamage)); }
+                if (checkCDtoCalc) { if (Program.R.IsReady()) { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 150, 225, 300 }[Program.R.Level] + 0.6 * _Player.TotalMagicalDamage)); } } else { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 150, 225, 300 }[Program.R.Level] + 0.6 * _Player.TotalMagicalDamage)); }
+            }
 
             /*
              * Small manual "generator" :----------------------------------------------------------------------------------------------------------------------------------
