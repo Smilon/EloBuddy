@@ -10,6 +10,7 @@ using EloBuddy.SDK.Events;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 
+
 namespace Killability
 {
     class DamageLib
@@ -129,6 +130,93 @@ namespace Killability
         private static bool HaveAmumuWDmg
         {
             get { return _Player.HasBuff("AuraofDespair"); }
+        }
+
+        public static bool HasRendBuff(this Obj_AI_Base target)
+        {
+            return target.Buffs.Find(b => b.Caster.IsMe && b.IsValid() && b.DisplayName == "KalistaExpungeMarker") != null; // GetRendBuff
+        }
+
+        public static class Damages // Hellsing's Kalista Damage Class
+        {
+
+            public static readonly Damage.DamageSourceBoundle QDamage = new Damage.DamageSourceBoundle();
+
+            private static readonly float[] RawRendDamage = { 20, 30, 40, 50, 60 };
+            private static readonly float[] RawRendDamageMultiplier = { 0.6f, 0.6f, 0.6f, 0.6f, 0.6f };
+            private static readonly float[] RawRendDamagePerSpear = { 10, 14, 19, 25, 32 };
+            private static readonly float[] RawRendDamagePerSpearMultiplier = { 0.2f, 0.225f, 0.25f, 0.275f, 0.3f };
+
+            static Damages()
+            {
+                QDamage.Add(new Damage.DamageSource(SpellSlot.Q, DamageType.Physical)
+                {
+                    Damages = new float[] { 10, 70, 130, 190, 250 }
+                });
+                QDamage.Add(new Damage.BonusDamageSource(SpellSlot.Q, DamageType.Physical)
+                {
+                    DamagePercentages = new float[] { 1, 1, 1, 1, 1 }
+                });
+            }
+
+            public static float GetRendDamage(AIHeroClient target)
+            {
+                return GetRendDamage(target, -1);
+            }
+
+            public static float GetRendDamage(Obj_AI_Base target, int customStacks = -1)
+            {
+                return (Player.Instance.CalculateDamageOnUnit(target, DamageType.Physical, GetRawRendDamage(target, customStacks)) - 20) * 0.98f;
+            }
+
+            public static float GetRawRendDamage(Obj_AI_Base target, int customStacks = -1)
+            {
+                var buff = target.Buffs.Find(b => b.Caster.IsMe && b.IsValid() && b.DisplayName == "KalistaExpungeMarker");
+
+                if (buff != null || customStacks > -1)
+                {
+                    return (RawRendDamage[Program.E.Level - 1] + RawRendDamageMultiplier[Program.E.Level - 1] * Player.Instance.TotalAttackDamage) + // Base damage
+                           ((customStacks < 0 ? buff.Count : customStacks) - 1) * // Spear count
+                           (RawRendDamagePerSpear[Program.E.Level - 1] + RawRendDamagePerSpearMultiplier[Program.E.Level - 1] * Player.Instance.TotalAttackDamage); // Damage per spear
+                }
+
+                return 0;
+            }
+
+            public static float GetTotalDamage(AIHeroClient target)
+            {
+                var damage = Player.Instance.GetAutoAttackDamage(target);
+
+                if (Program.Q.IsReady())
+                {
+                    damage += QDamage.GetDamage(target);
+                }
+
+                if (Program.E.IsReady())
+                {
+                    damage += GetRendDamage(target);
+                }
+
+                return damage;
+            }
+        }
+
+        public static List<T> MakeUnique<T>(this List<T> list) where T : Obj_AI_Base, new()
+        {
+            var uniqueList = new List<T>();
+
+            foreach (var entry in list)
+            {
+                if (uniqueList.All(e => e.NetworkId != entry.NetworkId))
+                {
+                    uniqueList.Add(entry);
+                }
+            }
+
+            list.Clear();
+            list.AddRange(uniqueList);
+
+            return list;
         }
     }
 }
