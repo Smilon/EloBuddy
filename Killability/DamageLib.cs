@@ -73,6 +73,12 @@ namespace Killability
               (float)(new[] { 150, 250, 350 }[Program.R.Level] + 0.8 * _Player.TotalMagicalDamage)
             };
 
+            float[] anivia = new float[] {
+                (float)(new[] { 60, 90, 120, 150, 180 }[Program.Q.Level] + new[] { 60, 90, 120, 150, 180 }[Program.Q.Level] + 1.0 * _Player.TotalMagicalDamage),
+                (float)(new[] { 55, 85, 115, 145, 175 }[Program.E.Level] + 0.5 * _Player.TotalMagicalDamage)
+                (float)(new[] { 80, 120, 160 }[Program.R.Level] + 0.25 * _Player.TotalMagicalDamage)
+            };
+
             if (_Player.ChampionName == "Aatrox")
             {
                 if (checkCDtoCalc) { if (Program.Q.IsReady()) { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Physical, aatrox[0]); } } else { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Physical, aatrox[0]); }
@@ -107,10 +113,9 @@ namespace Killability
             }
             else if (_Player.ChampionName == "Anivia")
             {
-                if (checkCDtoCalc) { if (Program.Q.IsReady()) { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 60, 90, 120, 150, 180 }[Program.Q.Level] + new[] { 60, 90, 120, 150, 180 }[Program.Q.Level] + 1.0 * _Player.TotalMagicalDamage)); } } else { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 60, 90, 120, 150, 180 }[Program.Q.Level] + new[] { 60, 90, 120, 150, 180 }[Program.Q.Level] + 1.0 * _Player.TotalMagicalDamage)); }
-                if (checkCDtoCalc) { if (Program.E.IsReady()) { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 55, 85, 115, 145, 175 }[Program.E.Level] + 0.5 * _Player.TotalMagicalDamage)); } } else { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 55, 85, 115, 145, 175 }[Program.E.Level] + 0.5 * _Player.TotalMagicalDamage)); } if (targ.HasBuff("chilled")) { wdmg = wdmg * 2; }
-                //Improve Anivia R logic, check if obj "cryo_storm" was made
-                if (checkCDtoCalc) { if (Program.R.IsReady()) { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 80, 120, 160 }[Program.R.Level] + 0.25 * _Player.TotalMagicalDamage)); } } else { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 80, 120, 160 }[Program.R.Level] + 0.25 * _Player.TotalMagicalDamage)); }
+                if (checkCDtoCalc) { if (Program.Q.IsReady()) { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, anivia[0]); } } else { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, anivia[0]); }
+                if (checkCDtoCalc) { if (Program.E.IsReady()) { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, anivia[1]); } } else { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, anivia[1]); } if (targ.HasBuff("chilled")) { edmg = edmg * 2; }
+                if (checkCDtoCalc) { if (Program.R.IsReady()) { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, anivia[2]); } } else { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, anivia[2]); }
             }
             else if (_Player.ChampionName == "Annie")
             {
