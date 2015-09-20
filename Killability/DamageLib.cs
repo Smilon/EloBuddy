@@ -75,9 +75,49 @@ namespace Killability
 
             float[] anivia = new float[] {
                 (float)(new[] { 60, 90, 120, 150, 180 }[Program.Q.Level] + new[] { 60, 90, 120, 150, 180 }[Program.Q.Level] + 1.0 * _Player.TotalMagicalDamage),
-                (float)(new[] { 55, 85, 115, 145, 175 }[Program.E.Level] + 0.5 * _Player.TotalMagicalDamage)
+                (float)(new[] { 55, 85, 115, 145, 175 }[Program.E.Level] + 0.5 * _Player.TotalMagicalDamage),
                 (float)(new[] { 80, 120, 160 }[Program.R.Level] + 0.25 * _Player.TotalMagicalDamage)
             };
+
+            float[] annie = new float[] {
+                (float)(new[] { 80, 115, 150, 185, 220 }[Program.Q.Level] + 0.8 * _Player.TotalMagicalDamage),
+                (float)(new[] { 70, 115, 160, 205, 250 }[Program.W.Level] + 0.85 * _Player.TotalMagicalDamage),
+                (float)(new[] { 175, 300, 425 }[Program.R.Level] + 0.8 * _Player.TotalMagicalDamage)
+            };
+
+            float[] ashe = new float[] {
+				(float)(new[] { 20, 35, 50, 65, 80 }[Program.W.Level] + 1.0 * _Player.TotalAttackDamage),
+				(float)(new[] { 250, 425, 600 }[Program.R.Level] + 1.0 * _Player.TotalMagicalDamage)
+            };
+
+            float[] azir = new float[] {
+				(float)(new[] { 65, 85, 105, 125, 145 }[Program.Q.Level] + 0.5 * _Player.TotalMagicalDamage),
+				(float)(0.6 * _Player.TotalMagicalDamage),
+				(float)(new[] { 60, 90, 120, 150, 180 }[Program.E.Level] + 0.4 * _Player.TotalMagicalDamage),
+				(float)(new[] { 150, 225, 300 }[Program.R.Level] + 0.6 * _Player.TotalMagicalDamage)
+            };
+
+            float[] bard = new float[] {	
+				(float)(new[] { 80, 125, 170, 215, 260 }[Program.Q.Level] + 0.65 * _Player.TotalMagicalDamage)
+			};
+
+            float[] blitzcrank = new float[] {	
+				(float)(new[] { 80, 135, 190, 245, 300 }[Program.Q.Level] + 1.0 * _Player.TotalMagicalDamage),
+				(float)2.0 * _Player.TotalAttackDamage,
+				(float)(new[] { 250, 375, 500 }[Program.R.Level] + 1.0 * _Player.TotalMagicalDamage)
+			};
+
+            float[] brand = new float[] {	
+				(float)(new[] { 80, 120, 160, 200, 240 }[Program.Q.Level] + 0.65 * _Player.TotalMagicalDamage),
+				(float)(new[] { 75, 120, 165, 210, 255 }[Program.W.Level] + 0.6 * _Player.TotalMagicalDamage),
+				(float)(new[] { 70, 105, 140, 175, 210 }[Program.E.Level] + 0.55 * _Player.TotalMagicalDamage),
+				(float)(new[] { 150, 250, 350 }[Program.R.Level] + 0.5 * _Player.TotalMagicalDamage)
+			};
+
+            float[] braum = new float[] {	
+				(float)(new[] { 70, 115, 160, 205, 250 }[Program.Q.Level]),
+				(float)(new[] { 150, 250, 350 }[Program.R.Level] + 0.6 * _Player.TotalMagicalDamage)
+			};
 
             if (_Player.ChampionName == "Aatrox")
             {
@@ -119,43 +159,43 @@ namespace Killability
             }
             else if (_Player.ChampionName == "Annie")
             {
-                if (checkCDtoCalc) { if (Program.Q.IsReady()) { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 80, 115, 150, 185, 220 }[Program.Q.Level] + 0.8 * _Player.TotalMagicalDamage)); } } else { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 80, 115, 150, 185, 220 }[Program.Q.Level] + 0.8 * _Player.TotalMagicalDamage)); }
-                if (checkCDtoCalc) { if (Program.W.IsReady()) { wdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 70, 115, 160, 205, 250 }[Program.W.Level] + 0.85 * _Player.TotalMagicalDamage)); } } else { wdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 70, 115, 160, 205, 250 }[Program.W.Level] + 0.85 * _Player.TotalMagicalDamage)); }
-                if (checkCDtoCalc) { if (Program.R.IsReady()) { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 175, 300, 425 }[Program.R.Level] + 0.8 * _Player.TotalMagicalDamage)); } } else { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 175, 300, 425 }[Program.R.Level] + 0.8 * _Player.TotalMagicalDamage)); }
+                if (checkCDtoCalc) { if (Program.Q.IsReady()) { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, annie[0]); } } else { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, annie[0]); }
+                if (checkCDtoCalc) { if (Program.W.IsReady()) { wdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, annie[1]); } } else { wdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, annie[1]); }
+                if (checkCDtoCalc) { if (Program.R.IsReady()) { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, annie[2]); } } else { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, annie[2]); }
             }
             else if (_Player.ChampionName == "Ashe")
             {
-                if (checkCDtoCalc) { if (Program.W.IsReady()) { wdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Physical, (float)(new[] { 20, 35, 50, 65, 80 }[Program.W.Level] + 1.0 * _Player.TotalAttackDamage)); } } else { wdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Physical, (float)(new[] { 20, 35, 50, 65, 80 }[Program.W.Level] + 1.0 * _Player.TotalAttackDamage)); }
-                if (checkCDtoCalc) { if (Program.R.IsReady()) { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 250, 425, 600 }[Program.R.Level] + 1.0 * _Player.TotalMagicalDamage)); } } else { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 250, 425, 600 }[Program.R.Level] + 1.0 * _Player.TotalMagicalDamage)); }
+                if (checkCDtoCalc) { if (Program.W.IsReady()) { wdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Physical, ashe[0]); } } else { wdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Physical, ashe[0]); }
+                if (checkCDtoCalc) { if (Program.R.IsReady()) { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, ashe[1]); } } else { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, ashe[1]); }
             }
             else if (_Player.ChampionName == "Azir")
             {
-                if (checkCDtoCalc) { if (Program.Q.IsReady()) { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 65, 85, 105, 125, 145 }[Program.Q.Level] + 0.5 * _Player.TotalMagicalDamage)); } } else { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 65, 85, 105, 125, 145 }[Program.Q.Level] + 0.5 * _Player.TotalMagicalDamage)); }
-                if (checkCDtoCalc) { if (Program.W.IsReady()) { wdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(0.6 * _Player.TotalMagicalDamage)); } } else { wdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(0.6 * _Player.TotalMagicalDamage)); } // fucking horrible formula, not sure if even working
-                if (checkCDtoCalc) { if (Program.E.IsReady()) { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 60, 90, 120, 150, 180 }[Program.E.Level] + 0.4 * _Player.TotalMagicalDamage)); } } else { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 60, 90, 120, 150, 180 }[Program.E.Level] + 0.4 * _Player.TotalMagicalDamage)); }
-                if (checkCDtoCalc) { if (Program.R.IsReady()) { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 150, 225, 300 }[Program.R.Level] + 0.6 * _Player.TotalMagicalDamage)); } } else { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 150, 225, 300 }[Program.R.Level] + 0.6 * _Player.TotalMagicalDamage)); }
+                if (checkCDtoCalc) { if (Program.Q.IsReady()) { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, azir[0]); } } else { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, azir[0]); }
+                if (checkCDtoCalc) { if (Program.W.IsReady()) { wdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, azir[1]); } } else { wdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, azir[1]); } // fucking horrible formula, not sure if even working
+                if (checkCDtoCalc) { if (Program.E.IsReady()) { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, azir[2]); } } else { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, azir[2]); }
+                if (checkCDtoCalc) { if (Program.R.IsReady()) { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, azir[3]); } } else { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, azir[3]); }
             }
             else if (_Player.ChampionName == "Bard")
             {
-                if (checkCDtoCalc) { if (Program.Q.IsReady()) { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 80, 125, 170, 215, 260 }[Program.Q.Level] + 0.65 * _Player.TotalMagicalDamage)); } } else { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 80, 125, 170, 215, 260 }[Program.Q.Level] + 0.65 * _Player.TotalMagicalDamage)); }
+                if (checkCDtoCalc) { if (Program.Q.IsReady()) { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, bard[0]); } } else { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, bard[0]); }
             }
             else if (_Player.ChampionName == "Blitzcrank")
             {
-                if (checkCDtoCalc) { if (Program.Q.IsReady()) { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 80, 135, 190, 245, 300 }[Program.Q.Level] + 1.0 * _Player.TotalMagicalDamage)); } } else { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 80, 135, 190, 245, 300 }[Program.Q.Level] + 1.0 * _Player.TotalMagicalDamage)); }
-                if (checkCDtoCalc) { if (Program.E.IsReady()) { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Physical, (float)2.0 * _Player.TotalAttackDamage); } } else { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Physical, (float)2.0 * _Player.TotalAttackDamage); }
-                if (checkCDtoCalc) { if (Program.R.IsReady()) { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 250, 375, 500 }[Program.R.Level] + 1.0 * _Player.TotalMagicalDamage)); } } else { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 250, 375, 500 }[Program.R.Level] + 1.0 * _Player.TotalMagicalDamage)); }
+                if (checkCDtoCalc) { if (Program.Q.IsReady()) { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, blitzcrank[0]); } } else { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, blitzcrank[0]); }
+                if (checkCDtoCalc) { if (Program.E.IsReady()) { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Physical, blitzcrank[1]); } } else { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Physical, blitzcrank[1]); }
+                if (checkCDtoCalc) { if (Program.R.IsReady()) { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, blitzcrank[2]); } } else { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, blitzcrank[2]); }
             }
             else if (_Player.ChampionName == "Brand")
             {
-                if (checkCDtoCalc) { if (Program.Q.IsReady()) { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 80, 120, 160, 200, 240 }[Program.Q.Level] + 0.65 * _Player.TotalMagicalDamage)); } } else { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 80, 120, 160, 200, 240 }[Program.Q.Level] + 0.65 * _Player.TotalMagicalDamage)); }
-                if (checkCDtoCalc) { if (Program.W.IsReady()) { wdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 75, 120, 165, 210, 255 }[Program.W.Level] + 0.6 * _Player.TotalMagicalDamage)); } } else { wdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 75, 120, 165, 210, 255 }[Program.W.Level] + 0.6 * _Player.TotalMagicalDamage)); } if (IsAblazed(targ)) { wdmg = wdmg * (float)1.25; }
-                if (checkCDtoCalc) { if (Program.E.IsReady()) { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 70, 105, 140, 175, 210 }[Program.E.Level] + 0.55 * _Player.TotalMagicalDamage)); } } else { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 70, 105, 140, 175, 210 }[Program.E.Level] + 0.55 * _Player.TotalMagicalDamage)); }
-                if (checkCDtoCalc) { if (Program.R.IsReady()) { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 150, 250, 350 }[Program.R.Level] + 0.5 * _Player.TotalMagicalDamage)); } } else { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 150, 250, 350 }[Program.R.Level] + 0.5 * _Player.TotalMagicalDamage)); }
+                if (checkCDtoCalc) { if (Program.Q.IsReady()) { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, brand[0]); } } else { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, brand[0]); }
+                if (checkCDtoCalc) { if (Program.W.IsReady()) { wdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, brand[1]); } } else { wdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, brand[1]); } if (IsAblazed(targ)) { wdmg = wdmg * (float)1.25; }
+                if (checkCDtoCalc) { if (Program.E.IsReady()) { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, brand[2]); } } else { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, brand[2]); }
+                if (checkCDtoCalc) { if (Program.R.IsReady()) { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, brand[3]); } } else { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, brand[3]); }
             }
             else if (_Player.ChampionName == "Braum")
             {
-                if (checkCDtoCalc) { if (Program.Q.IsReady()) { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 70, 115, 160, 205, 250 }[Program.Q.Level])); } } else { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 70, 115, 160, 205, 250 }[Program.Q.Level])); }
-                if (checkCDtoCalc) { if (Program.R.IsReady()) { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 150, 250, 350 }[Program.R.Level] + 0.6 * _Player.TotalMagicalDamage)); } } else { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 150, 250, 350 }[Program.R.Level] + 0.6 * _Player.TotalMagicalDamage)); }
+                if (checkCDtoCalc) { if (Program.Q.IsReady()) { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, braum[0]); } } else { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, braum[0]); }
+                if (checkCDtoCalc) { if (Program.R.IsReady()) { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, braum[1]); } } else { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, braum[1]); }
             }
 
             if (summonerIgnite != null)
