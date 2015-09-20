@@ -14,6 +14,16 @@ namespace Killability
 {
     class DamageLib
     {
+
+        /**
+         * Note : This returns the bool results of the damage calculations on the targ and if they're killable.
+         * This calculates the damage of the FULL combo, FULL. Meaning, all charges of a certain champions skill.
+         * Ex : 3 Ahri R's (Spirit Rush)
+         * Ex : 3 Akali R's (Shadow Dance)
+         * Ex : Akali Q damange AND the detonation damage (auto attack detonation)
+         * Ex : Nunu's R FULL charge
+         * Ex : All rounds of GangPlanks ULT
+        */
         public static AIHeroClient _Player { get { return ObjectManager.Player; } }
 
         public static Boolean calcDamage(Obj_AI_Base targ)
@@ -39,7 +49,13 @@ namespace Killability
                 qdmg = qdmg + _Player.CalculateDamageOnUnit(targ, DamageType.True, (float)(new[] { 40, 65, 90, 115, 140 }[Program.Q.Level] + 0.35 * _Player.TotalMagicalDamage));
                 wdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 40, 65, 90, 115, 140 }[Program.W.Level] + 0.4 * _Player.TotalMagicalDamage));
                 edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 60, 90, 120, 150, 200 }[Program.E.Level] + 0.5 * _Player.TotalMagicalDamage));
-                rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 70, 110, 150 }[Program.R.Level] + 0.3 * _Player.TotalMagicalDamage) * 2); //2 spirit rushes?
+                rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 70, 110, 150 }[Program.R.Level] + 0.3 * _Player.TotalMagicalDamage) * 3);
+            }
+            else if (_Player.ChampionName == "Akali")
+            {
+                qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 35, 55, 75, 95, 115 }[Program.Q.Level] + 0.4 * _Player.TotalMagicalDamage) + (float)(new[] { 45, 70, 95, 120, 145 }[Program.Q.Level] + 0.5 * _Player.TotalMagicalDamage));
+                edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Mixed, (float)(new[] { 30, 55, 80, 105, 130 }[Program.E.Level] + (0.6 * _Player.TotalAttackDamage) + (0.4 * _Player.TotalMagicalDamage)));
+                rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 100, 175, 250 }[Program.R.Level] + 0.5 * _Player.TotalMagicalDamage) * 3);
             }
 
             if (qdmg + wdmg + rdmg > targ.Health)
