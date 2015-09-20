@@ -16,7 +16,7 @@ namespace Killability
     {
 
         /**
-         * Note : This returns the bool results of the damage calculations on the targ and if they're killable.
+         * Note : This returns the bool results of the damage calculations on the targ and if they're killable regardless of cooldown or charges.
          * This calculates the damage of the FULL combo, FULL. Meaning, all charges of a certain champions skill.
          * Ex : 3 Ahri R's (Spirit Rush)
          * Ex : 3 Akali R's (Shadow Dance)
@@ -56,6 +56,11 @@ namespace Killability
                 qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 35, 55, 75, 95, 115 }[Program.Q.Level] + 0.4 * _Player.TotalMagicalDamage) + (float)(new[] { 45, 70, 95, 120, 145 }[Program.Q.Level] + 0.5 * _Player.TotalMagicalDamage));
                 edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Mixed, (float)(new[] { 30, 55, 80, 105, 130 }[Program.E.Level] + (0.6 * _Player.TotalAttackDamage) + (0.4 * _Player.TotalMagicalDamage)));
                 rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 100, 175, 250 }[Program.R.Level] + 0.5 * _Player.TotalMagicalDamage) * 3);
+            }
+            else if (_Player.ChampionName == "Alistar")
+            {
+                qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 60, 105, 150, 195, 240 }[Program.Q.Level] + 0.5 * _Player.TotalMagicalDamage));
+                wdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 55, 110, 165, 220, 275 }[Program.W.Level] + 0.7 * _Player.TotalMagicalDamage));
             }
 
             if (qdmg + wdmg + rdmg > targ.Health)
