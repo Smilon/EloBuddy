@@ -17,6 +17,12 @@ namespace Killability
 
         public static Menu KillMenu, SettingsM;
         public static bool alreadyPosted = false;
+        public static AIHeroClient _Player { get { return ObjectManager.Player; } }
+
+        public static Spell.Active Q;
+        public static Spell.Active W;
+        public static Spell.Active E;
+        public static Spell.Active R;
 
         static void Main(string[] args)
         {
@@ -39,7 +45,7 @@ namespace Killability
             SettingsM = KillMenu.AddSubMenu("Settings", "Settings");
             SettingsM.AddGroupLabel("Settings");
             SettingsM.AddSeparator();
-            SettingsM.Add("enabled", new KeyBind("Enable?", false, KeyBind.BindTypes.HoldActive, 'a'));
+            SettingsM.Add("enabled", new KeyBind("Enable?", false, KeyBind.BindTypes.PressToggle, 'a'));
 
             Game.OnTick += Game_OnTick;
 
@@ -50,6 +56,7 @@ namespace Killability
         {
             if (Program.SettingsM["enabled"].Cast<KeyBind>().CurrentValue)
             {
+
             }
         }
     }
