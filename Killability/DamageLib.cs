@@ -9,6 +9,7 @@ using EloBuddy.SDK.Enumerations;
 using EloBuddy.SDK.Events;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
+using extent = EloBuddy.SDK.Extensions;
 
 
 namespace Killability
@@ -27,6 +28,8 @@ namespace Killability
         */
         public static bool checkForBuffAura = false; // true to check to see if player has skill buff or aura on to calc
         public static bool checkCDtoCalc = true; //check if spell has cd between adding calc
+
+        public static Spell.Targeted ignite;
         public static AIHeroClient _Player { get { return ObjectManager.Player; } }
 
         public static Boolean calcDamage(Obj_AI_Base targ)
@@ -35,6 +38,8 @@ namespace Killability
             var wdmg = 0.0f;
             var edmg = 0.0f;
             var rdmg = 0.0f;
+            var igdmg = 0.0f;
+            var summonerIgnite = Player.Spells.FirstOrDefault(o => o.SData.Name == "summonerdot"); // Thanks finn
 
             if (_Player.ChampionName == "Aatrox")
             {
@@ -100,15 +105,22 @@ namespace Killability
             else if (_Player.ChampionName == "Blitzcrank")
             {
                 if (checkCDtoCalc) { if (Program.Q.IsReady()) { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 80, 135, 190, 245, 300 }[Program.Q.Level] + 1.0 * _Player.TotalMagicalDamage)); } } else { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 80, 135, 190, 245, 300 }[Program.Q.Level] + 1.0 * _Player.TotalMagicalDamage)); }
-                if (checkCDtoCalc) { if (Program.E.IsReady()) { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Physical, (float) 2.0 * _Player.TotalAttackDamage); } } else { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Physical, (float) 2.0 * _Player.TotalAttackDamage); }
+                if (checkCDtoCalc) { if (Program.E.IsReady()) { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Physical, (float)2.0 * _Player.TotalAttackDamage); } } else { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Physical, (float)2.0 * _Player.TotalAttackDamage); }
                 if (checkCDtoCalc) { if (Program.R.IsReady()) { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 250, 375, 500 }[Program.R.Level] + 1.0 * _Player.TotalMagicalDamage)); } } else { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 250, 375, 500 }[Program.R.Level] + 1.0 * _Player.TotalMagicalDamage)); }
             }
-            else if (_Player.ChampionName == "Brand") 
+            else if (_Player.ChampionName == "Brand")
             {
                 if (checkCDtoCalc) { if (Program.Q.IsReady()) { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 80, 120, 160, 200, 240 }[Program.Q.Level] + 0.65 * _Player.TotalMagicalDamage)); } } else { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 80, 120, 160, 200, 240 }[Program.Q.Level] + 0.65 * _Player.TotalMagicalDamage)); }
                 if (checkCDtoCalc) { if (Program.W.IsReady()) { wdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 75, 120, 165, 210, 255 }[Program.W.Level] + 0.6 * _Player.TotalMagicalDamage)); } } else { wdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 75, 120, 165, 210, 255 }[Program.W.Level] + 0.6 * _Player.TotalMagicalDamage)); } if (IsAblazed(targ)) { wdmg = wdmg * (float)1.25; }
                 if (checkCDtoCalc) { if (Program.E.IsReady()) { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 70, 105, 140, 175, 210 }[Program.E.Level] + 0.55 * _Player.TotalMagicalDamage)); } } else { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 70, 105, 140, 175, 210 }[Program.E.Level] + 0.55 * _Player.TotalMagicalDamage)); }
                 if (checkCDtoCalc) { if (Program.R.IsReady()) { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 150, 250, 350 }[Program.R.Level] + 0.5 * _Player.TotalMagicalDamage)); } } else { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 150, 250, 350 }[Program.R.Level] + 0.5 * _Player.TotalMagicalDamage)); }
+            }
+
+            if (summonerIgnite != null)
+            {
+                SpellSlot igSlot = extent.GetSpellSlotFromName(_Player, "summonerdot");
+                ignite = new Spell.Targeted(igSlot, 600);
+                if (checkCDtoCalc) { if (ignite.IsReady()) { igdmg = _Player.CalculateDamageOnUnit(targ, DamageType.True, getIgniteDamage()); } } else { igdmg = _Player.CalculateDamageOnUnit(targ, DamageType.True, getIgniteDamage()); }
             }
 
             /*
@@ -126,7 +138,7 @@ namespace Killability
              *
             */
 
-            if (qdmg + wdmg + rdmg > targ.Health)
+            if (qdmg + wdmg + rdmg + igdmg > targ.Health)
             {
                 return true;
             }
@@ -135,6 +147,11 @@ namespace Killability
                 return false;
             }
 
+        }
+
+        public static int getIgniteDamage()
+        {
+            return 50 + 20 * _Player.Level;
         }
 
         public static bool IsAblazed(this Obj_AI_Base target)
