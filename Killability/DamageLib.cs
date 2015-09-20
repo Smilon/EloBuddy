@@ -93,19 +93,27 @@ namespace Killability
                 if (checkCDtoCalc) { if (Program.E.IsReady()) { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 60, 90, 120, 150, 180 }[Program.E.Level] + 0.4 * _Player.TotalMagicalDamage)); } } else { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 60, 90, 120, 150, 180 }[Program.E.Level] + 0.4 * _Player.TotalMagicalDamage)); }
                 if (checkCDtoCalc) { if (Program.R.IsReady()) { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 150, 225, 300 }[Program.R.Level] + 0.6 * _Player.TotalMagicalDamage)); } } else { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 150, 225, 300 }[Program.R.Level] + 0.6 * _Player.TotalMagicalDamage)); }
             }
+            else if (_Player.ChampionName == "Bard")
+            {
+                if (checkCDtoCalc) { if (Program.Q.IsReady()) { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 80, 125, 170, 215, 260 }[Program.Q.Level] + 0.65 * _Player.TotalMagicalDamage)); } } else { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 80, 125, 170, 215, 260 }[Program.Q.Level] + 0.65 * _Player.TotalMagicalDamage)); }
+            }
+            else if (_Player.ChampionName == "Blitzcrank")
+            {
+                if (checkCDtoCalc) { if (Program.Q.IsReady()) { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 80, 135, 190, 245, 300 }[Program.Q.Level] + 1.0 * _Player.TotalMagicalDamage)); } } else { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 80, 135, 190, 245, 300 }[Program.Q.Level] + 1.0 * _Player.TotalMagicalDamage)); }
+                if (checkCDtoCalc) { if (Program.E.IsReady()) { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Physical, (float) 2.0 * _Player.TotalAttackDamage); } } else { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Physical, (float) 2.0 * _Player.TotalAttackDamage); }
+                if (checkCDtoCalc) { if (Program.R.IsReady()) { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 250, 375, 500 }[Program.R.Level] + 1.0 * _Player.TotalMagicalDamage)); } } else { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 250, 375, 500 }[Program.R.Level] + 1.0 * _Player.TotalMagicalDamage)); }
+            }
 
             /*
              * Small manual "generator" :----------------------------------------------------------------------------------------------------------------------------------
              * 
-             * if (checkCDtoCalc) { if (Program.a.IsReady()) { } } else { }
              * admg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { }[Program.a.Level] + 0.1 * _Player.TotalMagicalDamage));
-             * 
-             * 
-             * "Work Area" :----------------------------------------------------------------------------------------------------------------------------------
              * 
              * admg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { }[Program.a.Level] + 0.1 * _Player.TotalMagicalDamage));
              * 
              * "Finished" :----------------------------------------------------------------------------------------------------------------------------------
+             * 
+             * if (checkCDtoCalc) { if (Program.a.IsReady()) { } } else { }
              * 
              * if (checkCDtoCalc) { if (Program.a.IsReady()) { } } else { }
              *
