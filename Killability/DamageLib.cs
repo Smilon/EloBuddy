@@ -80,11 +80,16 @@ namespace Killability
                 if (checkCDtoCalc) { if (Program.W.IsReady()) { wdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 70, 115, 160, 205, 250 }[Program.W.Level] + 0.85 * _Player.TotalMagicalDamage)); } } else { wdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 70, 115, 160, 205, 250 }[Program.W.Level] + 0.85 * _Player.TotalMagicalDamage)); }
                 if (checkCDtoCalc) { if (Program.R.IsReady()) { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 175, 300, 425 }[Program.R.Level] + 0.8 * _Player.TotalMagicalDamage)); } } else { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 175, 300, 425 }[Program.R.Level] + 0.8 * _Player.TotalMagicalDamage)); }
             }
+            else if (_Player.ChampionName == "Ashe")
+            {
+                if (checkCDtoCalc) { if (Program.W.IsReady()) { wdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Physical, (float)(new[] { 20, 35, 50, 65, 80 }[Program.W.Level] + 1.0 * _Player.TotalAttackDamage)); } } else { wdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Physical, (float)(new[] { 20, 35, 50, 65, 80 }[Program.W.Level] + 1.0 * _Player.TotalAttackDamage)); }
+                if (checkCDtoCalc) { if (Program.R.IsReady()) { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 250, 425, 600 }[Program.R.Level] + 1.0 * _Player.TotalMagicalDamage)); } } else { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 250, 425, 600 }[Program.R.Level] + 1.0 * _Player.TotalMagicalDamage)); }
+            }
 
             /*
              * Small manual "generator" :----------------------------------------------------------------------------------------------------------------------------------
              * 
-             *  if (checkCDtoCalc) { if (Program.a.IsReady()) { } } else { }
+             * if (checkCDtoCalc) { if (Program.a.IsReady()) { } } else { }
              * admg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { }[Program.a.Level] + 0.1 * _Player.TotalMagicalDamage));
              * 
              * 
@@ -93,7 +98,8 @@ namespace Killability
              * admg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { }[Program.a.Level] + 0.1 * _Player.TotalMagicalDamage));
              * 
              * "Finished" :----------------------------------------------------------------------------------------------------------------------------------
-             *
+             * 
+             * if (checkCDtoCalc) { if (Program.a.IsReady()) { } } else { }
              *
             */
 
