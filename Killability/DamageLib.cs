@@ -26,7 +26,7 @@ namespace Killability
          * Ex : All rounds of GangPlanks ULT
         */
         public static bool checkForBuffAura = false; // true to check to see if player has skill buff or aura on to calc
-        public static bool checkCDtoCalc = false; //check if spell has cd between adding calc
+        public static bool checkCDtoCalc = true; //check if spell has cd between adding calc
         public static AIHeroClient _Player { get { return ObjectManager.Player; } }
 
         public static Boolean calcDamage(Obj_AI_Base targ)
@@ -103,6 +103,13 @@ namespace Killability
                 if (checkCDtoCalc) { if (Program.E.IsReady()) { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Physical, (float) 2.0 * _Player.TotalAttackDamage); } } else { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Physical, (float) 2.0 * _Player.TotalAttackDamage); }
                 if (checkCDtoCalc) { if (Program.R.IsReady()) { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 250, 375, 500 }[Program.R.Level] + 1.0 * _Player.TotalMagicalDamage)); } } else { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 250, 375, 500 }[Program.R.Level] + 1.0 * _Player.TotalMagicalDamage)); }
             }
+            else if (_Player.ChampionName == "Brand") 
+            {
+                if (checkCDtoCalc) { if (Program.Q.IsReady()) { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 80, 120, 160, 200, 240 }[Program.Q.Level] + 0.65 * _Player.TotalMagicalDamage)); } } else { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 80, 120, 160, 200, 240 }[Program.Q.Level] + 0.65 * _Player.TotalMagicalDamage)); }
+                if (checkCDtoCalc) { if (Program.W.IsReady()) { wdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 75, 120, 165, 210, 255 }[Program.W.Level] + 0.6 * _Player.TotalMagicalDamage)); } } else { wdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 75, 120, 165, 210, 255 }[Program.W.Level] + 0.6 * _Player.TotalMagicalDamage)); } if (IsAblazed(targ)) { wdmg = wdmg * (float)1.25; }
+                if (checkCDtoCalc) { if (Program.E.IsReady()) { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 70, 105, 140, 175, 210 }[Program.E.Level] + 0.55 * _Player.TotalMagicalDamage)); } } else { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 70, 105, 140, 175, 210 }[Program.E.Level] + 0.55 * _Player.TotalMagicalDamage)); }
+                if (checkCDtoCalc) { if (Program.R.IsReady()) { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 150, 250, 350 }[Program.R.Level] + 0.5 * _Player.TotalMagicalDamage)); } } else { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 150, 250, 350 }[Program.R.Level] + 0.5 * _Player.TotalMagicalDamage)); }
+            }
 
             /*
              * Small manual "generator" :----------------------------------------------------------------------------------------------------------------------------------
@@ -128,6 +135,11 @@ namespace Killability
                 return false;
             }
 
+        }
+
+        public static bool IsAblazed(this Obj_AI_Base target)
+        {
+            return target.HasBuff("brandablaze");
         }
 
         private static bool HaveAatroxWDmg
