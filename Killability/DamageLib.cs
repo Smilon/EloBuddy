@@ -115,6 +115,11 @@ namespace Killability
                 if (checkCDtoCalc) { if (Program.E.IsReady()) { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 70, 105, 140, 175, 210 }[Program.E.Level] + 0.55 * _Player.TotalMagicalDamage)); } } else { edmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 70, 105, 140, 175, 210 }[Program.E.Level] + 0.55 * _Player.TotalMagicalDamage)); }
                 if (checkCDtoCalc) { if (Program.R.IsReady()) { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 150, 250, 350 }[Program.R.Level] + 0.5 * _Player.TotalMagicalDamage)); } } else { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 150, 250, 350 }[Program.R.Level] + 0.5 * _Player.TotalMagicalDamage)); }
             }
+            else if (_Player.ChampionName == "Braum")
+            {
+                if (checkCDtoCalc) { if (Program.Q.IsReady()) { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 70, 115, 160, 205, 250 }[Program.Q.Level])); } } else { qdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 70, 115, 160, 205, 250 }[Program.Q.Level])); }
+                if (checkCDtoCalc) { if (Program.R.IsReady()) { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 150, 250, 350 }[Program.R.Level] + 0.6 * _Player.TotalMagicalDamage)); } } else { rdmg = _Player.CalculateDamageOnUnit(targ, DamageType.Magical, (float)(new[] { 150, 250, 350 }[Program.R.Level] + 0.6 * _Player.TotalMagicalDamage)); }
+            }
 
             if (summonerIgnite != null)
             {
