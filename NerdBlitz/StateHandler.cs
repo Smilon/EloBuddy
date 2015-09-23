@@ -31,7 +31,7 @@ namespace NerdBlitz
             return _Player.GetAutoAttackRange();
         }
 
-        public static void Interrupter_OnInterruptableSpell(Obj_AI_Base unit, InterruptableSpellEventArgs spell)
+        public static void Interrupter_OnInterruptableSpell(Obj_AI_Base unit, Interrupter.InterruptableSpellEventArgs spell)
         {
             var hpPre = _Player.HealthPercent > Program.MinHQNoQ;
             var target = TargetSelector2.GetTarget(GetDynamicRange() + 100, DamageType.Magical);
