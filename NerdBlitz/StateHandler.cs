@@ -34,12 +34,11 @@ namespace NerdBlitz
         public static void Interrupter_OnInterruptableSpell(Obj_AI_Base unit, Interrupter.InterruptableSpellEventArgs spell)
         {
             var hpPre = _Player.HealthPercent > Program.MinHQNoQ;
-            var target = TargetSelector2.GetTarget(GetDynamicRange() + 100, DamageType.Magical);
             if (Program.MiscMenu["interrupt"].Cast<CheckBox>().CurrentValue && Program.Q.IsReady() && hpPre && Program.MiscMenu["grab" + target.ChampionName].Cast<CheckBox>().CurrentValue)
             {
                 if (unit.Distance(_Player.ServerPosition, true) <= Program.Q.Range)
                 {
-                    CheckCollisionAndCastQ(target, HitChance.High);
+                    CheckCollisionAndCastQ(unit, HitChance.High);
                 }
             }
             if (Program.MiscMenu["interrupt"].Cast<CheckBox>().CurrentValue && Program.E.IsReady())
@@ -121,7 +120,7 @@ namespace NerdBlitz
 
             var target = TargetSelector2.GetTarget(GetDynamicRange() + 100, DamageType.Magical);
             if (target == null) return;
-            if (Program.HarassMenu["useQHarass"].Cast<CheckBox>().CurrentValue && Program.E.IsReady() && target.IsValidTarget(Program.E.Range))
+            if (Program.HarassMenu["useQHarass"].Cast<CheckBox>().CurrentValue && Program.Q.IsReady() && target.IsValidTarget(Program.Q.Range))
             {
                 CheckCollisionAndCastQ(target, HitChance.Medium);
             }
