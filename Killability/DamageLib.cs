@@ -14,7 +14,7 @@ using extent = EloBuddy.SDK.Extensions;
 
 namespace Killability
 {
-    class DamageLib
+    public static class DamageLib
     {
 
         /**
