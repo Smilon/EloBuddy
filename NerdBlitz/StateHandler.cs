@@ -34,7 +34,7 @@ namespace NerdBlitz
         public static void Interrupter_OnInterruptableSpell(Obj_AI_Base unit, Interrupter.InterruptableSpellEventArgs spell)
         {
             var hpPre = _Player.HealthPercent > Program.MinHQNoQ;
-            if (Program.MiscMenu["interrupt"].Cast<CheckBox>().CurrentValue && Program.Q.IsReady() && hpPre && Program.MiscMenu["grab" + target.ChampionName].Cast<CheckBox>().CurrentValue)
+            if (Program.MiscMenu["interrupt"].Cast<CheckBox>().CurrentValue && Program.Q.IsReady() && hpPre)
             {
                 if (unit.Distance(_Player.ServerPosition, true) <= Program.Q.Range)
                 {
