@@ -27,7 +27,7 @@ namespace NerdGath
             return _Player.GetAutoAttackRange();
         }
 
-        public static void Interrupter_OnInterruptableSpell(Obj_AI_Base unit, InterruptableSpellEventArgs spell)
+        public static void Interrupter_OnInterruptableSpell(Obj_AI_Base unit, Interrupter.InterruptableSpellEventArgs spell)
         {
             var target = TargetSelector2.GetTarget(GetDynamicRange() + 100, DamageType.Magical);
             if (Program.MiscMenu["interrupt"].Cast<CheckBox>().CurrentValue && Program.Q.IsReady())
