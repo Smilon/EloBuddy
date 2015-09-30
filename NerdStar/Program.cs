@@ -23,7 +23,7 @@ namespace NerdStar
         public static Spell.Active Q;
         public static Spell.Targeted W;
 
-        public static Menu AliMenu, ComboMenu;
+        public static Menu AliMenu, ComboMenu, MiscMenu;
 
         private static void Loading_OnLoadingComplete(EventArgs args)
         {
@@ -47,7 +47,13 @@ namespace NerdStar
             ComboMenu.AddSeparator();
             ComboMenu.Add("doCombo", new KeyBind("Do W+Q Combo", false, KeyBind.BindTypes.HoldActive, 'a'));
 
+            MiscMenu = AliMenu.AddSubMenu("Misc", "Misc");
+            MiscMenu.AddGroupLabel("Misc. Settings");
+            MiscMenu.AddSeparator();
+            MiscMenu.Add("interrupt", new CheckBox("Use Spells to Interrupt"));			
+
             Game.OnTick += Game_OnTick;
+			Interrupter.OnInterruptableSpell += StateHandler.Interrupter_OnInterruptableSpell;
 
             EloBuddy.Chat.Print("NerdStar : Thanks for using my script! Enjoy the game!");
         }

@@ -25,6 +25,38 @@ namespace NerdStar
             }
             return _Player.GetAutoAttackRange();
         }
+		
+        public static void Interrupter_OnInterruptableSpell(Obj_AI_Base unit, Interrupter.InterruptableSpellEventArgs spell)
+        {
+            float getDist = EloBuddy.SDK.Extensions.Distance(_Player, unit) / 2.0f; // formula of swag
+            if (Program.MiscMenu["interrupt"].Cast<CheckBox>().CurrentValue && Program.W.IsReady() && Program.Q.IsReady() && unit.IsValidTarget(Program.W.Range))
+            {
+                if (unit.IsValidTarget(220))
+                {
+                    Program.W.Cast(unit);
+                    Program.Q.Cast();
+                }
+                else
+                {
+                    Program.W.Cast(unit);
+                    EloBuddy.SDK.Core.DelayAction(() => { Program.Q.Cast(); }, (int)getDist);
+                }
+            }
+            if (Program.MiscMenu["interrupt"].Cast<CheckBox>().CurrentValue && Program.Q.IsReady())
+            {
+                if (unit.Distance(_Player.ServerPosition, true) <= Program.Q.Range)
+                {
+                    Program.Q.Cast(unit);
+                }
+            }
+            if (Program.MiscMenu["interrupt"].Cast<CheckBox>().CurrentValue && Program.W.IsReady())
+            {
+                if (unit.Distance(_Player.ServerPosition, true) <= Program.W.Range)
+                {
+                    Program.W.Cast(unit);
+                }
+            }
+        }		
 
         public static void Combo()
         {
