@@ -42,9 +42,9 @@ namespace Killability
             var summonerIgnite = Player.Spells.FirstOrDefault(o => o.SData.Name == "summonerdot"); // Thanks finn
 
             float[] aatrox = new float[] {
-                (float)(new[] { 70, 115, 160, 205, 250 }[Program.Q.Level] + 0.6 * _Player.BaseAttackDamage),
-                (float)(new[] { 60, 95, 130, 165, 200 }[Program.W.Level] + 1.0 * _Player.BaseAttackDamage),
-                (float)(new[] { 75, 110, 145, 180, 215 }[Program.E.Level] + (0.6 * _Player.BaseAbilityDamage) + (0.6 * _Player.BaseAttackDamage)),
+                (float)(new[] { 70, 115, 160, 205, 250 }[Program.Q.Level] + 0.6 * (_Player.TotalAttackDamage - _Player.BaseAttackDamage)),
+                (float)(new[] { 60, 95, 130, 165, 200 }[Program.W.Level] + 1.0 * (_Player.TotalAttackDamage - _Player.BaseAttackDamage)),
+                (float)(new[] { 75, 110, 145, 180, 215 }[Program.E.Level] + (0.6 * _Player.BaseAbilityDamage) + (0.6 * (_Player.TotalAttackDamage - _Player.BaseAttackDamage))),
                 (float)(new[] { 200, 300, 400 }[Program.R.Level] + 1.0 * _Player.TotalMagicalDamage)
             };
 
@@ -118,6 +118,13 @@ namespace Killability
 				(float)(new[] { 70, 115, 160, 205, 250 }[Program.Q.Level]),
 				(float)(new[] { 150, 250, 350 }[Program.R.Level] + 0.6 * _Player.TotalMagicalDamage)
 			};
+			
+            float[] caitlyn = new float[] {	
+				(float)(new[] {20,60,100,140,180}[Program.Q.Level] + 1.30 * _Player.TotalAttackDamage),
+				(float)(new[] {80,130,180,230,280}[Program.W.Level] + 0.6 * _Player.TotalMagicalDamage),
+				(float)(new[] {80,130,180,230,280}[Program.E.Level] + 0.8 * _Player.TotalMagicalDamage),
+				(float)(new[] {250,475,700}[Program.R.Level] + 2.0 * (_Player.TotalAttackDamage - _Player.BaseAttackDamage))
+			};			
 
             if (_Player.ChampionName == "Aatrox")
             {
