@@ -18,7 +18,7 @@ namespace NerdBlitz
     {
         public static AIHeroClient _Player { get { return ObjectManager.Player; } }
         public static Spell.Targeted ignite;
-        public static Spell.Active flash;
+        public static Spell.Skillshot flash;
         public static Vector2 oWp;
         public static Vector2 nWp;
 
@@ -34,7 +34,7 @@ namespace NerdBlitz
         public static void Interrupter_OnInterruptableSpell(Obj_AI_Base unit, Interrupter.InterruptableSpellEventArgs spell)
         {
             var hpPre = _Player.HealthPercent > Program.MinHQNoQ;
-            if (Program.MiscMenu["interrupt"].Cast<CheckBox>().CurrentValue && Program.Q.IsReady() && hpPre)
+            if (Program.MiscMenu["interrupt"].Cast<CheckBox>().CurrentValue && Program.Q.IsReady() && hpPre && Program.MiscMenu["grab" + unit.BaseSkinName].Cast<CheckBox>().CurrentValue)
             {
                 if (unit.Distance(_Player.ServerPosition, true) <= Program.Q.Range)
                 {
@@ -57,18 +57,53 @@ namespace NerdBlitz
             }
         }
 
+        public static void immobileQ()
+        {
+            var target = TargetSelector2.GetTarget(GetDynamicRange() + 100, DamageType.Magical);
+            if (target == null) return;
+            if (target.Distance(_Player.ServerPosition) >= Program.Q.Range && Program.MiscMenu["grab" + target.ChampionName].Cast<CheckBox>().CurrentValue)
+            {
+                if (Program.Q.GetPrediction(target).HitChance == HitChance.Immobile)
+                {
+                    Program.Q.Cast(target);
+                }
+            }
+        }
+
+        public static void Clear()
+        {
+            var manaPre = _Player.ManaPercent > Program.MinNumberManaCL;
+
+            if (manaPre == false)
+            {
+                return;
+            }
+
+            if (Program.clearMenu["useRClear"].Cast<CheckBox>().CurrentValue && Program.R.IsReady())
+            {
+                var minions = ObjectManager.Get<Obj_AI_Minion>().Where(min => min.IsEnemy).Where(min => Program.R.IsInRange(min));
+                foreach (var minion in minions)
+                {
+                    var minionc = EntityManager.GetLaneMinions(EntityManager.UnitTeam.Enemy, Player.Instance.ServerPosition.To2D(), Program.R.Range);
+                    if (minionc.Count >= Program.getMinMin)
+                    {
+                        Program.R.Cast();
+                    }
+                }
+            }
+        }
+
         public static void Combo()
         {
             var target = TargetSelector2.GetTarget(GetDynamicRange() + 100, DamageType.Magical);
             var t = TargetSelector2.GetTarget(Program.R.Range, DamageType.Magical);
             var summonerIgnite = Player.Spells.FirstOrDefault(o => o.SData.Name == "summonerdot"); // Thanks finn
             var hpPre = _Player.HealthPercent > Program.MinHQNoQ;
+            var manaPre = _Player.ManaPercent > Program.MinNumberManaC;
 
             if (target == null) return;
 
-            var manaPre = _Player.ManaPercent > Program.MinNumberManaC;
-
-            if (!manaPre)
+            if (manaPre == false)
             {
                 return;
             }
@@ -84,14 +119,15 @@ namespace NerdBlitz
                         ignite.Cast(target);
                     }
                 }
-            }
-            if (Program.ComboMenu["igniteAlways"].Cast<CheckBox>().CurrentValue && ignite.IsReady())
-            {
-                if (summonerIgnite != null)
+                if (Program.ComboMenu["igniteAlways"].Cast<CheckBox>().CurrentValue && ignite.IsReady())
                 {
-                    ignite.Cast(target);
+                    if (summonerIgnite != null)
+                    {
+                        ignite.Cast(target);
+                    }
                 }
             }
+
             if (Program.ComboMenu["useWCombo"].Cast<CheckBox>().CurrentValue && Program.W.IsReady())
             {
                 Program.W.Cast();
@@ -103,6 +139,7 @@ namespace NerdBlitz
             if (Program.ComboMenu["useECombo"].Cast<CheckBox>().CurrentValue && Program.E.IsReady() && target.IsValidTarget(Program.E.Range))
             {
                 Program.E.Cast();
+                Orbwalker.ResetAutoAttack();
             }
             if (Program.ComboMenu["useRCombo"].Cast<CheckBox>().CurrentValue && Program.R.IsReady() && t.CountEnemiesInRange(Program.R.Range) >= Program.MinNumberR)
             {
@@ -113,14 +150,14 @@ namespace NerdBlitz
         public static void Harass()
         {
             var manaPre = _Player.ManaPercent > Program.MinNumberManaH;
-            if (!manaPre)
+            if (manaPre == false)
             {
                 return;
             }
 
             var target = TargetSelector2.GetTarget(GetDynamicRange() + 100, DamageType.Magical);
             if (target == null) return;
-            if (Program.HarassMenu["useQHarass"].Cast<CheckBox>().CurrentValue && Program.Q.IsReady() && target.IsValidTarget(Program.Q.Range))
+            if (Program.HarassMenu["useQHarass"].Cast<CheckBox>().CurrentValue && Program.Q.IsReady() && target.IsValidTarget(Program.Q.Range) && Program.MiscMenu["grab" + target.ChampionName].Cast<CheckBox>().CurrentValue)
             {
                 CheckCollisionAndCastQ(target, HitChance.Medium);
             }
@@ -158,35 +195,45 @@ namespace NerdBlitz
             }
         }
 
-        public static void FlashQCombo() // ported from L# - Danz
+        internal static void FlashQCombo()
         {
-            /*
-            var target = TargetSelector2.GetTarget(GetDynamicRange() + 100, DamageType.Magical);
+            Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+
+            var target = TargetSelector2.GetTarget(Program.Q.Range + 425, DamageType.Magical);
+
+            var qPred = Program.Q.GetPrediction(target);
+            var closestMinion = qPred.CollisionObjects.Count(h => h.IsEnemy && !h.IsDead && h is Obj_AI_Minion) < 1;
 
             var FlashSlot = Player.Spells.FirstOrDefault(o => o.SData.Name == "summonerflash"); // Thanks finn
-
             SpellSlot flSlot = extent.GetSpellSlotFromName(_Player, "summonerflash");
-            flash = new Spell.Active(flSlot, 425);
+            flash = new Spell.Skillshot(flSlot, 32767, SkillShotType.Linear);
 
-            if (EloBuddy.SDK.Extensions.Distance(_Player, target) > Program.Q.Range && Program.ComboMenu["doFlashQ"].Cast<KeyBind>().CurrentValue)
+            if (target == null) return;
+
+            var x = target.Position.Extend(target, 425f);
+            if (qPred.HitChance != HitChance.Collision)
             {
-                if (FlashSlot != null && flash.IsReady() && Program.Q.IsReady())
+                if (qPred.HitChance >= HitChance.High && closestMinion && flash.IsReady())
                 {
-                    EloBuddy.Player.UpdateChargeableSpell(Program.Q.Slot, V2E(ObjectManager.Player.Position, target.Position, 425f).To3D(), true);
-                    var predPos = Program.Q.GetPrediction(target);
-                    if (!predPos.HitChance.Equals(HitChance.High))
-                        return;
-                    _Player.Spellbook.CastSpell(flSlot, target.Position);
-                    Program.Q.Cast(target);
+                    flash.Cast((Vector3)x);
+                    Program.Q.Cast((Vector3)x);
+                }
+
+            }
+        }
+
+        internal static void KSR()
+        {
+            var target = TargetSelector2.GetTarget(GetDynamicRange() + 100, DamageType.Magical);
+            if (target == null) return;
+
+            if (Program.MiscMenu["KSR"].Cast<CheckBox>().CurrentValue)
+            {
+                if (_Player.CalculateDamageOnUnit(target, DamageType.Magical, (float)(new[] { 250, 375, 500 }[Program.R.Level] + 1.0 * _Player.TotalMagicalDamage)) > target.Health && target.IsValidTarget(Program.R.Range))
+                {
+                    Program.R.Cast();
                 }
             }
-             */
         }
-
-        static Vector2 V2E(Vector3 from, Vector3 direction, float distance)
-        {
-            return from.To2D() + distance * Vector3.Normalize(direction - from).To2D();
-        }
-
     }
 }

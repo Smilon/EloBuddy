@@ -34,20 +34,24 @@ namespace NerdBlitz
         private static Slider manaH;
         public static int MinNumberManaH { get { return manaH.CurrentValue; } }
 
+        private static Slider manaCL;
+        public static int MinNumberManaCL { get { return manaCL.CurrentValue; } }
+
         private static Slider lowQ;
         public static int MinHQNoQ { get { return lowQ.CurrentValue; } }
 
-        public static Menu BlitzMenu, ComboMenu, HarassMenu, FleeMenu, MiscMenu;
+        private static Slider rRange;
+        public static int getRRange { get { return rRange.CurrentValue; } }
+
+        private static Slider minMin;
+        public static int getMinMin { get { return minMin.CurrentValue; } }
+
+        public static Menu BlitzMenu, ComboMenu, HarassMenu, FleeMenu, MiscMenu, clearMenu;
 
         private static void Loading_OnLoadingComplete(EventArgs args)
         {
             TargetSelector2.init();
             Bootstrap.Init(null);
-
-            Q = new Spell.Skillshot(SpellSlot.Q, 910, SkillShotType.Linear); // shortened range for better grabs instead of 100% range grabs
-            W = new Spell.Active(SpellSlot.W);
-            E = new Spell.Active(SpellSlot.E);
-            R = new Spell.Active(SpellSlot.R, 600);
 
             BlitzMenu = MainMenu.AddMenu("NerdBlitz", "nerdblitz");
             BlitzMenu.AddGroupLabel("NerdBlitz");
@@ -56,9 +60,6 @@ namespace NerdBlitz
             BlitzMenu.AddLabel("Berb @ EloBuddy");
             BlitzMenu.AddSeparator();
             BlitzMenu.AddLabel("TO-DO ::");
-            BlitzMenu.AddLabel("- Flash > Q into Combo");
-            BlitzMenu.AddLabel("- Lane Clear");
-            BlitzMenu.AddLabel("- Jungle Troll (smite support)");
             BlitzMenu.AddLabel("- [Give me suggestions!]");
 
             ComboMenu = BlitzMenu.AddSubMenu("Combo", "Combo");
@@ -83,6 +84,15 @@ namespace NerdBlitz
             HarassMenu.AddSeparator();
             manaH = HarassMenu.Add("manamanager", new Slider("Minimum mana to harass (%)", 20, 1, 100));
 
+            clearMenu = BlitzMenu.AddSubMenu("Clear", "Clear");
+            clearMenu.AddGroupLabel("Lane Clear Settings");
+            clearMenu.AddSeparator();
+            clearMenu.Add("useRClear", new CheckBox("Use R"));
+            clearMenu.AddSeparator();
+            minMin = clearMenu.Add("minmin", new Slider("Minimum minions to R", 6, 1, 20));
+            clearMenu.AddSeparator();
+            manaCL = clearMenu.Add("manamanager", new Slider("Minimum mana to clear (%)", 20, 1, 100));
+
             FleeMenu = BlitzMenu.AddSubMenu("Flee", "Flee");
             FleeMenu.AddGroupLabel("Flee Settings");
             FleeMenu.AddSeparator();
@@ -92,24 +102,40 @@ namespace NerdBlitz
             MiscMenu.AddGroupLabel("Misc. Settings");
             MiscMenu.AddSeparator();
             MiscMenu.Add("interrupt", new CheckBox("Use Spells to Interrupt"));
+            MiscMenu.Add("immobile", new CheckBox("Auto Q on immobile"));
             MiscMenu.AddSeparator();
             lowQ = MiscMenu.Add("hpcheck", new Slider("Don't pull if below HP (%)", 30, 1, 100));
+            rRange = MiscMenu.Add("rrange", new Slider("R cast range (if changed, please reload addon)", 590, 125, 600));
+            MiscMenu.Add("KSR", new CheckBox("KS w/ R"));
             MiscMenu.AddSeparator();
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.Team != _Player.Team))
             {
                 MiscMenu.Add("grab" + enemy.ChampionName, new CheckBox("Grab : " + enemy.ChampionName + "?"));
             }
             MiscMenu.AddSeparator();
-            MiscMenu.Add("doFlashQ", new KeyBind("Do Flash Q (Not working)", false, KeyBind.BindTypes.HoldActive, 't'));
+            MiscMenu.Add("doFlashQ", new KeyBind("Do Flash Q", false, KeyBind.BindTypes.HoldActive, 't'));
 
             Game.OnTick += Game_OnTick;
             Interrupter.OnInterruptableSpell += StateHandler.Interrupter_OnInterruptableSpell;
 
             EloBuddy.Chat.Print("NerdBlitz : Thanks for using my script! Enjoy the game!");
+
+            Q = new Spell.Skillshot(SpellSlot.Q, 910, SkillShotType.Linear); // shortened range for better grabs instead of 100% range grabs
+            W = new Spell.Active(SpellSlot.W);
+            E = new Spell.Active(SpellSlot.E, 125);
+            R = new Spell.Active(SpellSlot.R, (uint)getRRange);
         }
 
         private static void Game_OnTick(EventArgs args)
         {
+            if (Program.MiscMenu["KSR"].Cast<CheckBox>().CurrentValue)
+            {
+                StateHandler.KSR();
+            }
+            if (Program.MiscMenu["immobile"].Cast<CheckBox>().CurrentValue)
+            {
+                StateHandler.immobileQ();
+            }
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
                 StateHandler.Combo();
@@ -122,10 +148,13 @@ namespace NerdBlitz
             {
                 StateHandler.Flee();
             }
-            if (Program.ComboMenu["doFlashQ"].Cast<KeyBind>().CurrentValue)
+            else if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
+            {
+                StateHandler.Clear();
+            }
+            if (Program.MiscMenu["doFlashQ"].Cast<KeyBind>().CurrentValue)
             {
                 StateHandler.FlashQCombo();
-                Orbwalker.MoveTo(Game.CursorPos);
             }
         }
     }
